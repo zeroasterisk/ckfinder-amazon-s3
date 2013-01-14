@@ -30,7 +30,7 @@ function CheckAuthentication()
 	// user logs in your system. To be able to use session variables don't
 	// forget to add session_start() at the top of this file.
 
-	return false;
+	return true;
 }
 
 // LicenseKey : Paste your license key here. If left blank, CKFinder will be
@@ -58,9 +58,11 @@ Examples:
 	$baseUrl = 'http://example.com/ckfinder/files/';
 	$baseUrl = '/userfiles/';
 
-ATTENTION: The trailing slash is required.
+ATTENTION: The trailing slash is **NOT** required FOR AMAZON S3 USE!.
 */
-$baseUrl = '/ckfinder/userfiles/';
+
+//$baseUrl = 'https://s3.amazonaws.com/[bucketname]/[baseDir from below]';
+$baseUrl = '';
 
 /*
 $baseDir : the path to the local directory (in the server) which points to the
@@ -79,7 +81,23 @@ Examples:
 
 ATTENTION: The trailing slash is required.
 */
-$baseDir = resolveUrl($baseUrl);
+
+//Limit access to a subdirectory on S3. Useful if you  have a per user folder. Can use a session variable here
+//i.e. $baseDir = '/' . md5($_SESSION['userId']) . '/';
+//IMPORTANT: In the code's current state, you need the leading slash as well! This is because I'm dumb
+//			 and did a bunch of substr($baseDir, 1) throughout the code. In the future I will remove this
+$baseDir = '/';
+
+
+/*
+ * Amazon S3 Configuration Settings
+ */
+$config['AmazonS3'] = Array(
+    'AccessKey' => '',
+    'SecretKey' => '',
+    'Bucket' => ''
+);
+
 
 /*
  * ### Advanced Settings
@@ -192,29 +210,31 @@ to upload `.swf` files only if you understand and can accept this risk.
 */
 $config['DefaultResourceTypes'] = '';
 
+//Dealing with resourceTypes was too confusing and complicated. Now simply have 1 resource type called Files
+//This can change in the future.
 $config['ResourceType'][] = Array(
 		'name' => 'Files',				// Single quotes not allowed
-		'url' => $baseUrl . 'files',
-		'directory' => $baseDir . 'files',
+		'url' => $baseUrl,
+		'directory' => $baseDir,
 		'maxSize' => 0,
-		'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip',
+		'allowedExtensions' => '',
 		'deniedExtensions' => '');
 
-$config['ResourceType'][] = Array(
-		'name' => 'Images',
-		'url' => $baseUrl . 'images',
-		'directory' => $baseDir . 'images',
-		'maxSize' => 0,
-		'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
-		'deniedExtensions' => '');
+// $config['ResourceType'][] = Array(
+// 		'name' => 'Images',
+// 		'url' => $baseUrl . 'images',
+// 		'directory' => $baseDir . 'images',
+// 		'maxSize' => 0,
+// 		'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
+// 		'deniedExtensions' => '');
 
-$config['ResourceType'][] = Array(
-		'name' => 'Flash',
-		'url' => $baseUrl . 'flash',
-		'directory' => $baseDir . 'flash',
-		'maxSize' => 0,
-		'allowedExtensions' => 'swf,flv',
-		'deniedExtensions' => '');
+// $config['ResourceType'][] = Array(
+// 		'name' => 'Flash',
+// 		'url' => $baseUrl . 'flash',
+// 		'directory' => $baseDir . 'flash',
+// 		'maxSize' => 0,
+// 		'allowedExtensions' => 'swf,flv',
+// 		'deniedExtensions' => '');
 
 /*
  Due to security issues with Apache modules, it is recommended to leave the
