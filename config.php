@@ -10,6 +10,17 @@
  *
  * Other settings may be left with their default values, or used to control
  * advanced features of CKFinder.
+ *
+ *
+ * NOTE: if you don't want to commit your configuration into this repository
+ * (to reduce conflicts and ensure you're not sharing your credentials)
+ * just make a copy of the file named: config.custom.php
+ *
+ * cd ..../ckfinder
+ * cp config.php config.custom.php
+ *
+ * edit the custom config file with all your settings/changes
+ * if that file exists, this one will be ignored
  */
 
 /**

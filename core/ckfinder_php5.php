@@ -11,7 +11,9 @@
  * this file is part of the Source Code of CKFinder.
  */
 
-define( 'CKFINDER_DEFAULT_BASEPATH', '/ckfinder/' ) ;
+if (!defined('CKFINDER_DEFAULT_BASEPATH')) {
+	define( 'CKFINDER_DEFAULT_BASEPATH', '/ckfinder/' ) ;
+}
 
 class CKFinder
 {

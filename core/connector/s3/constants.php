@@ -55,7 +55,13 @@ define('CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED',501);
 
 define('CKFINDER_CONNECTOR_DEFAULT_USER_FILES_PATH',"/userfiles/");
 define('CKFINDER_CONNECTOR_LANG_PATH',"./lang");
-define('CKFINDER_CONNECTOR_CONFIG_FILE_PATH',"./../../../config.php");
+
+// support for config.custom.php
+if (file_exists('./../../../config.custom.php')) {
+	define('CKFINDER_CONNECTOR_CONFIG_FILE_PATH',"./../../../config.custom.php");
+} else {
+	define('CKFINDER_CONNECTOR_CONFIG_FILE_PATH',"./../../../config.php");
+}
 
 if (version_compare(phpversion(), '6', '>=')) {
     define('CKFINDER_CONNECTOR_PHP_MODE', 6);
